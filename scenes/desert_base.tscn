@@ -1,0 +1,149 @@
+[gd_scene load_steps=10 format=3 uid="uid://c6ckmsqd3lp8p"]
+
+[ext_resource type="Script" path="res://scripts/desert_base_scene.gd"]
+[ext_resource type="Script" path="res://scripts/player_controller.gd"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_sand"]
+size = Vector3(2000, 1, 2000)
+
+[sub_resource type="BoxMesh" id="BoxMesh_hill"]
+size = Vector3(300, 150, 300)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sand"]
+albedo_color = Color(0.61, 0.54, 0.42, 1.0)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rock"]
+albedo_color = Color(0.52, 0.47, 0.35, 1.0)
+roughness = 0.95
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_player"]
+radius = 0.4
+height = 1.8
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ground"]
+size = Vector3(2000, 2, 2000)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dirt"]
+albedo_color = Color(0.45, 0.4, 0.3, 1.0)
+roughness = 0.85
+
+[sub_resource type="Environment" id="Environment_night"]
+background_mode = 1
+background_color = Color(0.01, 0.01, 0.05, 1.0)
+ambient_light_source = 2
+ambient_light_intensity = 0.3
+
+[node name="DesertBase" type="Node3D"]
+script = ExtResource("res://scripts/desert_base_scene.gd")
+
+[node name="Environment" type="Node3D" parent="."]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
+transform = Transform3D(0.707107, -0.408248, 0.577349, 0, 0.816497, 0.57735, -0.707107, -0.408248, 0.577349, 0, 100, 0)
+light_energy_multiplier = 0.4
+shadow_enabled = true
+shadow_blur = 3
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
+environment = SubResource("Environment_night")
+
+[node name="Terrain" type="Node3D" parent="."]
+
+[node name="SandGround" type="MeshInstance3D" parent="Terrain"]
+mesh = SubResource("BoxMesh_sand")
+material_override = SubResource("StandardMaterial3D_sand")
+
+[node name="GroundCollision" type="StaticBody3D" parent="Terrain/SandGround"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/SandGround/GroundCollision"]
+shape = SubResource("BoxShape3D_ground")
+
+[node name="Hill1" type="MeshInstance3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -400, 75, -300)
+mesh = SubResource("BoxMesh_hill")
+material_override = SubResource("StandardMaterial3D_rock")
+
+[node name="Hill1Collision" type="StaticBody3D" parent="Terrain/Hill1"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/Hill1/Hill1Collision"]
+shape = BoxShape3D()
+
+[node name="Hill2" type="MeshInstance3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 400, 75, -300)
+mesh = SubResource("BoxMesh_hill")
+material_override = SubResource("StandardMaterial3D_rock")
+
+[node name="Hill2Collision" type="StaticBody3D" parent="Terrain/Hill2"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/Hill2/Hill2Collision"]
+shape = BoxShape3D()
+
+[node name="Hill3" type="MeshInstance3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -300, 75, 400)
+mesh = SubResource("BoxMesh_hill")
+material_override = SubResource("StandardMaterial3D_rock")
+
+[node name="Hill3Collision" type="StaticBody3D" parent="Terrain/Hill3"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/Hill3/Hill3Collision"]
+shape = BoxShape3D()
+
+[node name="Hill4" type="MeshInstance3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 300, 75, 400)
+mesh = SubResource("BoxMesh_hill")
+material_override = SubResource("StandardMaterial3D_rock")
+
+[node name="Hill4Collision" type="StaticBody3D" parent="Terrain/Hill4"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/Hill4/Hill4Collision"]
+shape = BoxShape3D()
+
+[node name="RuinedBase" type="Node3D" parent="."]
+
+[node name="BaseStructure1" type="MeshInstance3D" parent="RuinedBase"]
+transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1, -80, 0, 0)
+mesh = BoxMesh()
+material_override = SubResource("StandardMaterial3D_rock")
+
+[node name="BaseStructure1Collision" type="StaticBody3D" parent="RuinedBase/BaseStructure1"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RuinedBase/BaseStructure1/BaseStructure1Collision"]
+shape = BoxShape3D()
+
+[node name="BaseStructure2" type="MeshInstance3D" parent="RuinedBase"]
+transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1, 80, 0, 0)
+mesh = BoxMesh()
+material_override = SubResource("StandardMaterial3D_rock")
+
+[node name="BaseStructure2Collision" type="StaticBody3D" parent="RuinedBase/BaseStructure2"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RuinedBase/BaseStructure2/BaseStructure2Collision"]
+shape = BoxShape3D()
+
+[node name="DirtRoad" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.02, 0, 0, 0, 1, 0, 0, -500)
+mesh = BoxMesh()
+material_override = SubResource("StandardMaterial3D_dirt")
+
+[node name="Player" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, -800)
+script = ExtResource("res://scripts/player_controller.gd")
+
+[node name="Camera3D" type="Camera3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+shape = SubResource("CapsuleShape3D_player")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="ObjectiveText" type="Label" parent="UI"]
+anchor_left = 0.05
+anchor_top = 0.05
+anchor_right = 0.95
+anchor_bottom = 0.3
+theme_override_font_sizes/font_size = 18
+custom_minimum_size = Vector2(500, 200)
+text = "Loading objective..."
+wrap_enabled = true
